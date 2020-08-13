@@ -80,6 +80,63 @@
 - SubView들의 Frame 값을 변화시키는게 아니라 부모 View 좌표축이 변하면서 SubView가 그려져야하는 위치가 달라졌기 때문.
 - ScrollView, TableView 등을 스크롤 할 때 ScrollView.bounds가 변하고, SubView들이 그려지는 위치가 달라지는 것이 대표적인 예
 
+## ViewController의 생명주기
+- loadView : 컨트롤러가 관리하는 뷰를 생성. 뷰 컨트롤러가 생성되고 순차적으로 완성되었을때만 호출된다.
+- viewDidLoad : 컨트롤러가 뷰의 메모리에 올라간 뒤에 호출된다. 뷰가 생성될 때만 호출된다.
+- viewWillAppear : 화면에 뷰가 표시될때마다 호출된다. 이 단계는 뷰는 정의된 바운드를 가지고 있지만 화면 회전은 적용되지 않는다.
+- viewWillLayoutSubviews : 뷰 컨트롤러에게 그 자식뷰의 레이아웃을 조정하는 것에 대한 것을 알려주기 위해 호출. 이 메소드는 프레임이 바뀔때마다 호출된다
+- viewDidLayoutSubviews : 뷰가 그 자식 뷰의 레이아웃에 영향을 준 것을 뷰 컨트롤러에게 알려주기 위해 호출. 뷰가 그 자식 뷰의 레이아웃을 바꾸고 난 뒤에 추가적인 변경을 하고 싶을 때 사용하는 이벤트 함수
+- viewDidAppear : 뷰가 나타났다는 것을 컨트롤러에게 알리는 역할을 수행. 호출되는 시점으로는 뷰가 화면에 나타난 직후에 실행된다.
+- viewWillDisAppear : 뷰가 사라지기 직전에 호출되는 함수이다. 뷰가 삭제 되려고 하고 있는 것을 뷰 컨트롤러에게 알린다.
+- viewDidDisAppear : 뷰 컨트롤러에게 뷰가 제거되었음을 알린다. 호출시점은 viewWillDisAppear 다음에 호출된다.
+
+## App의 생명주기(AppDelegate)
+- Not Running : 앱이 실행되지 않은 상태
+- Inactive : 앱이 실행중인 상태. 그러나 아무런 이벤트를 받지 않는 상태
+- Active : 앱이 실행중이며 이벤트가 발생한 상태
+- Background : 앱이 백그라운드에 있는 상태. 그러나 실행되는 코드가 있는 상태
+- Suspened : 앱이 백그라운드에 있고 실행되는 코드가 없는 상태
+(Inactive와 Active 상태를 합쳐 Foreground 라고 한다) 
+
+- application(_:didFinishLaunching:) 앱이 처음 시작될 떄 실행
+- applicationWillResignActive: 앱이 active 에서 inactive로 이동될 때 실행
+- applicationDidEnterBackground: 앱이 background 상태일 때 실행
+- applicationWillEnterForeground: 앱이 background에서 foreground로 이동 될때 실행 (아직 foreground에서 실행중이진 않음)
+- applicationDidBecomeActive: 앱이 active상태가 되어 실행 중일 때applicationWillTerminate: - 앱이 종료될 때 실행 
+
+## 고차함수(Map, Reduce, Filter)
+
+### Map
+- 데이터를 변형하고자 할 때 사용.
+- 기존 컨테이너의 값들은 변경되지 않고 새로운 컨테이너를 생성하여 반환한다.
+- 코드 재사용이 용이하다.
+- 컴파일러 최적화 측면에서 성능이 좋다.
+- 다중 스레드 환경에서 하나의 컨테이너에 여러 스레드들이 동시에 변경을 하려고 할 때 예측하지 못한 결과 발생을 방지한다.
+
+### Reduce
+- 컨테이너 내부를 하나로 합쳐주는 기능을 한다.
+- 정수 배열이라면 전달받은 함수의 연산 결과로 합쳐주고, 문자열 배열이라면 문자열을 하나로 합쳐준다.
+- 첫 번째 매개변수를 통해 초기값을 지정할 수 있다.
+
+### Filter
+- 컨테이너 내부의 값들을 걸러서 추출하고자 할 때 사용한다
+- Filter의 매개변수로 전달되는 함수의 반환 타입은 Bool 타입 이다.
+- 반환 값이 true라면 값을 포함하고, false라면 배제하여 map과 마찬가지로 새로운 컨테이너를 생성하여 반환한다.
+
+## 동기(Synchronize)와 비동기(Asyncronize)
+
+### 동기(Synchronize)
+- 주어진 명령을 차례대로 처리하되 하나의 업무가 완료될 때 까지는 다른 업무로 넘어가지 않는 방식.
+- 중간에 대기하는 시간 때문에 효율은 떨어지나 일관된 업무 보장과 동시다발적 업무가 발생하지 않으므로 대응이 불필요하여 업무구성이 단순화된다.
+
+### 비동기(Asyncronize)
+- 주어진 명령을 차례대로 처리하되 시간이 걸리는 업무는 진행해둔채 기다리는 동안 다른 업무를 처리하는 방식
+- 일관적인 업무 흐름이 깨지고 응답에 대한 대응이 필요하다.
+
+## GCD(Grand Central Dispatch)
+- Multicore Process를 위한 Thread programming의 방법이다.
+- 스레드를 관리하면서 동시적으로 작업을 실행시키는 애플이 제공하는 저수준 API를 제공하는 라이브러리이다.
+
 
 
 
