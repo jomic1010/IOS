@@ -67,6 +67,18 @@
 - 멀티스레딩에 안전하다.
 - 상속이 불가능하다. (protocol은 사용가능)
 
+## Frame과 Bounds
+
+### Frame
+- SuperView(상위뷰) 좌표시스템 내에서의 View의 위치와 크기
+
+### Bounds
+- View 자기 자신의 좌표시스템에서의 위치와 크기
+- 부모 View와의 위치관계와는 아무런 관계가 없다.
+- 자기자신의 좌표시스템을 가리키기 때문에 기본적으로 origin은 x:0, y:0을 가리킨다.
+- Bounds의 origin을 변경한다는 것은 SubView들이 화면상에서 그려지는 위치가 변경 됨을 의미한다.
+- SubView들의 Frame 값을 변화시키는게 아니라 부모 View 좌표축이 변하면서 SubView가 그려져야하는 위치가 달라졌기 때문.
+- ScrollView, TableView 등을 스크롤 할 때 ScrollView.bounds가 변하고, SubView들이 그려지는 위치가 달라지는 것이 대표적인 예
 
 
 
