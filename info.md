@@ -186,5 +186,15 @@
 - 실제로 작업이 동시에 처리된다.
 - 멀티코어에서만 가능
 
+### MVP
+- Model + View + Presenter
+- Model과 View는 MVC 패턴과 동일하고, Controller 대신 Presenter가 존재
+
+- Model : 어플리케이션에서 사용되는 데이터와 그 데이터를 처리하는 부분
+- View : 사용자에서 보여지는 UI 부분
+- Presenter : View에서 요청한 정보로 Model을 가공하여 View에 전달해 주는 부분
+
+### MVVM
+
 
 
