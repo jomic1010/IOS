@@ -191,6 +191,11 @@
 ### MVC
 - Model + View + Controller
 
+- Model : 애플리케이션에서 사용할 데이터들을 관리
+- View : 유저 인터페이스를 표현 및 관리
+- Controller : View와 Model의 다리 역할을 하며, ㄷView의 입력을 Model이 반영하고 Model의 변화를 View에 갱싢는 역할을 한다.
+- 하지만 애플의 MVC는 기존의 MVC와 달라서 View와 Controller가 강하게 연결되어 있어 View Controller가 거의 모든일을 한다.
+
 ### MVP
 - Model + View + Presenter
 - Model과 View는 MVC 패턴과 동일하고, Controller 대신 Presenter가 존재
@@ -200,7 +205,21 @@
 - Presenter : View에서 요청한 정보로 Model을 가공하여 View에 전달해 주는 부분
 
 ### MVVM
-
+- Model + View + ViewModel
+- Controller를 빼고 ViewModel을 추가한 패턴이다.
+- View Controller가 View가 되고 ViewModel이 중간 역할을 한다.
+- View와 ViewModel 사이에 Binding(바인딩-연결고리)가 있다.
+- ViewModel은 Model에 변화를 주고, ViewModel을 업데이트 하는데 이 바인딩으로 인해 View도 업데이트 된다.
+- Reactive programming을 할때 많이 사용하는 패턴
 
 ### VIPER
+- View + Interactor + Presenter, Entities, Router
+
+- View : Presenter의 요청대로 디스플레이하고, 사용자 입력을 Presenter로 보내는 역할을 한다.
+- Interactor : Use Case에 따라서 Entity 모델 객체를 조작하는 로직을 담고 있습니다.
+- Presenter : Interactor로부터 데이터를 가져오고, View로 보내기 위해 데이터를 준비하여 언제 View에 보여줄지를 결정한다.
+- Entity : 모델 객체 Dumb Model
+- Router : 화면 전환을 담당하며, Presenter가 언제 화면을 전환해야하는지를 안다면, Wireframe은 화면전환을 어떻게 해야하는지 알고 있다.
+
+
 
