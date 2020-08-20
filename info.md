@@ -186,6 +186,11 @@
 - 실제로 작업이 동시에 처리된다.
 - 멀티코어에서만 가능
 
+## 디자인 패턴
+
+### MVC
+- Model + View + Controller
+
 ### MVP
 - Model + View + Presenter
 - Model과 View는 MVC 패턴과 동일하고, Controller 대신 Presenter가 존재
@@ -197,4 +202,5 @@
 ### MVVM
 
 
+### VIPER
 
