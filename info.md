@@ -221,5 +221,6 @@
 - Entity : 모델 객체 Dumb Model
 - Router : 화면 전환을 담당하며, Presenter가 언제 화면을 전환해야하는지를 안다면, Wireframe은 화면전환을 어떻게 해야하는지 알고 있다.
 
-
-
+## UIStackView
+- 여러뷰를 가로방향 또는 세로방향으로 배치할 때 복잡한 컨스트레인트 설정 없이, 또는 컨스트레인트만으로 설정하기 어려운 뷰의 배치등을 구현할때 쓰일 수 있는 뷰.
+- aggangedSubview로 하위뷰들이 관리되며, 이 하위 뷰들에  Axis(가로 세로 방향), Alignment(세로방향 정렬), Distribution(가로방향 정렬), Spacing(하위뷰들간의 간격) 의 규칙을 적용할 수 있다.
