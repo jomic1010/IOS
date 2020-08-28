@@ -1,11 +1,118 @@
 # IOS 정보 
 
+### GCD(Grand Central Dispatch)
+- Multicore Process를 위한 Thread programming의 방법이다.
+- 스레드를 관리하면서 동시적으로 작업을 실행시키는 애플이 제공하는 저수준 API를 제공하는 라이브러리이다.
+- 기본적으로 스레드 풀의 관리를 프로그래머가 아닌 운영체제에서 관리하기 때문에 프로그러머가 작업을 비동기적으로 쉽게 사용할 수 있다.
+- 프로그래머가 실행할 작업을 생성하고 Dispatch Queue에 추가하면 GCD는 작업에 맞는 스레드를 자동으로 생성해서 실행하고 작업이 종료되면 해당 스레드를 제거한다.
 
-## ARC(Automatic Reference Counting)
-- 자동 참조 계수라고 하며 앱의 메모리 사용을 추적하고 관리하기 위해 사용한다.
-- ARC는 인스턴스가 더이상 필요가 없을 때 클래스 인스턴스에 사용된 메모리를 자동적으로 해제한다.
-- 코드를 빌드(컴파일) 할때 특정 객체의 레퍼런스 카운트를 추적하여 0 가 되는 시점에 자동으로 release 코드를 넣어주는것을 말한다.
-- 컴파일 시점에 동작한다.
+#### 디스패치 대기열(Dispatch Queue)
+- 작업을 연속적 혹은 동시에 진행하기는 하지만, 언제나 먼저 들어오면 먼저 나가는 순서로 실행된다.
+- Serial Dispatch Queue는 한 번에 하나의 작업만을 실행하며, 해당 작업이 대기열에서 제외되고 새로운 작업이 시작되기 전까지 기다린다.
+- Concurrent Dispatch Queue는 이미 시작된 작업이 완료될 때까지 기다리지 않고 가능한 많은 작업을 진행한다.
+- 디스패치 대기열은 GCD 기술 일부이다.
+
+### NSOperation 
+- NSOperation은 어떤 하나의 작업을 나타낸다.
+- 모델링 상태, 우선순위, 의존성, 관리를 지원하는 유용하고 Thread safe한 추상 클래스이다.
+- 예를들어 네트워크 요청, 이미지 리사이즈, 텍스트 처리, 기타 다양한 반복처리 등 오래걸리는 작업을 처리해야하는 NSOperation가 있다고 할 때 특정 작업이 담겨있는 객체는 감독 없이 많은 일을 할 수 없는데, 이러한 작업을 진행하는 감독을 NSOperationQueue가 담당한다.
+
+## 고차함수(Map, Reduce, Filter)
+
+### Map
+- 데이터를 변형하고자 할 때 사용.
+- 기존 컨테이너의 값들은 변경되지 않고 새로운 컨테이너를 생성하여 반환한다.
+- 코드 재사용이 용이하다.
+- 컴파일러 최적화 측면에서 성능이 좋다.
+- 다중 스레드 환경에서 하나의 컨테이너에 여러 스레드들이 동시에 변경을 하려고 할 때 예측하지 못한 결과 발생을 방지한다.
+
+### Reduce
+- 컨테이너 내부를 하나로 합쳐주는 기능을 한다.
+- 정수 배열이라면 전달받은 함수의 연산 결과로 합쳐주고, 문자열 배열이라면 문자열을 하나로 합쳐준다.
+- 첫 번째 매개변수를 통해 초기값을 지정할 수 있다.
+
+### Filter
+- 컨테이너 내부의 값들을 걸러서 추출하고자 할 때 사용한다
+- Filter의 매개변수로 전달되는 함수의 반환 타입은 Bool 타입 이다.
+- 반환 값이 true라면 값을 포함하고, false라면 배제하여 map과 마찬가지로 새로운 컨테이너를 생성하여 반환한다.
+
+## 동기(Synchronize)와 비동기(Asyncronize)
+
+### 동기(Synchronize)
+- 주어진 명령을 차례대로 처리하되 하나의 업무가 완료될 때 까지는 다른 업무로 넘어가지 않는 방식.
+- 중간에 대기하는 시간 때문에 효율은 떨어지나 일관된 업무 보장과 동시다발적 업무가 발생하지 않으므로 대응이 불필요하여 업무구성이 단순화된다.
+
+### 비동기(Asyncronize)
+- 주어진 명령을 차례대로 처리하되 시간이 걸리는 업무는 진행해둔채 기다리는 동안 다른 업무를 처리하는 방식
+- 일관적인 업무 흐름이 깨지고 응답에 대한 대응이 필요하다.
+
+## 스레드
+- 하나의 프로세스 내에서 실행되는 작업흐름의 단위.
+- 프로세스가 시작하는 동시에 동작하는 스레드를 메인 스레드라고 하고 이외의 추가로 생성되는 스레드를 서브 스레드라고 부른다.
+
+## 멀티 스레드
+- 여러개의 스레드가 동시에 진행되는 것을 의미한다.
+- 하나의 프로세스 내에서 여러개의 스레드가 존재하고, 스레드들이 프로세스의 자원을 공유하되 실행은 독립적으로 이루어지는 구조.
+
+## 디자인 패턴
+
+### MVC
+- Model + View + Controller
+
+- Model : 애플리케이션에서 사용할 데이터들을 관리
+- View : 유저 인터페이스를 표현 및 관리
+- Controller : View와 Model의 다리 역할을 하며, ㄷView의 입력을 Model이 반영하고 Model의 변화를 View에 갱싢는 역할을 한다.
+- 하지만 애플의 MVC는 기존의 MVC와 달라서 View와 Controller가 강하게 연결되어 있어 View Controller가 거의 모든일을 한다.
+
+### MVP
+- Model + View + Presenter
+- Model과 View는 MVC 패턴과 동일하고, Controller 대신 Presenter가 존재
+
+- Model : 어플리케이션에서 사용되는 데이터와 그 데이터를 처리하는 부분
+- View : 사용자에서 보여지는 UI 부분
+- Presenter : View에서 요청한 정보로 Model을 가공하여 View에 전달해 주는 부분
+
+### MVVM
+- Model + View + ViewModel
+- Controller를 빼고 ViewModel을 추가한 패턴이다.
+- View Controller가 View가 되고 ViewModel이 중간 역할을 한다.
+- View와 ViewModel 사이에 Binding(바인딩-연결고리)가 있다.
+- ViewModel은 Model에 변화를 주고, ViewModel을 업데이트 하는데 이 바인딩으로 인해 View도 업데이트 된다.
+- Reactive programming을 할때 많이 사용하는 패턴
+
+### VIPER
+- View + Interactor + Presenter, Entities, Router
+
+- View : Presenter의 요청대로 디스플레이하고, 사용자 입력을 Presenter로 보내는 역할을 한다.
+- Interactor : Use Case에 따라서 Entity 모델 객체를 조작하는 로직을 담고 있습니다.
+- Presenter : Interactor로부터 데이터를 가져오고, View로 보내기 위해 데이터를 준비하여 언제 View에 보여줄지를 결정한다.
+- Entity : 모델 객체 Dumb Model
+- Router : 화면 전환을 담당하며, Presenter가 언제 화면을 전환해야하는지를 안다면, Wireframe은 화면전환을 어떻게 해야하는지 알고 있다.
+
+## ViewController의 생명주기
+- loadView : 컨트롤러가 관리하는 뷰를 생성. 뷰 컨트롤러가 생성되고 순차적으로 완성되었을때만 호출된다.
+- viewDidLoad : 컨트롤러가 뷰의 메모리에 올라간 뒤에 호출된다. 뷰가 생성될 때만 호출된다.
+- viewWillAppear : 화면에 뷰가 표시될때마다 호출된다. 이 단계는 뷰는 정의된 바운드를 가지고 있지만 화면 회전은 적용되지 않는다.
+- viewWillLayoutSubviews : 뷰 컨트롤러에게 그 자식뷰의 레이아웃을 조정하는 것에 대한 것을 알려주기 위해 호출. 이 메소드는 프레임이 바뀔때마다 호출된다
+- viewDidLayoutSubviews : 뷰가 그 자식 뷰의 레이아웃에 영향을 준 것을 뷰 컨트롤러에게 알려주기 위해 호출. 뷰가 그 자식 뷰의 레이아웃을 바꾸고 난 뒤에 추가적인 변경을 하고 싶을 때 사용하는 이벤트 함수
+- viewDidAppear : 뷰가 나타났다는 것을 컨트롤러에게 알리는 역할을 수행. 호출되는 시점으로는 뷰가 화면에 나타난 직후에 실행된다.
+- viewWillDisAppear : 뷰가 사라지기 직전에 호출되는 함수이다. 뷰가 삭제 되려고 하고 있는 것을 뷰 컨트롤러에게 알린다.
+- viewDidDisAppear : 뷰 컨트롤러에게 뷰가 제거되었음을 알린다. 호출시점은 viewWillDisAppear 다음에 호출된다.
+
+## App의 생명주기(AppDelegate)
+- Not Running : 앱이 실행되지 않은 상태
+- Inactive : 앱이 실행중인 상태. 그러나 아무런 이벤트를 받지 않는 상태
+- Active : 앱이 실행중이며 이벤트가 발생한 상태
+- Background : 앱이 백그라운드에 있는 상태. 그러나 실행되는 코드가 있는 상태
+- Suspened : 앱이 백그라운드에 있고 실행되는 코드가 없는 상태
+(Inactive와 Active 상태를 합쳐 Foreground 라고 한다) 
+
+- application(_:didFinishLaunching:) 앱이 처음 시작될 떄 실행
+- applicationWillResignActive: 앱이 active 에서 inactive로 이동될 때 실행
+- applicationDidEnterBackground: 앱이 background 상태일 때 실행
+- applicationWillEnterForeground: 앱이 background에서 foreground로 이동 될때 실행 (아직 foreground에서 실행중이진 않음)
+- applicationDidBecomeActive: 앱이 active상태가 되어 실행 중일 때applicationWillTerminate: - 앱이 종료될 때 실행 
+
 
 ## strong, weak, unowned
 
@@ -80,86 +187,6 @@
 - SubView들의 Frame 값을 변화시키는게 아니라 부모 View 좌표축이 변하면서 SubView가 그려져야하는 위치가 달라졌기 때문.
 - ScrollView, TableView 등을 스크롤 할 때 ScrollView.bounds가 변하고, SubView들이 그려지는 위치가 달라지는 것이 대표적인 예
 
-## ViewController의 생명주기
-- loadView : 컨트롤러가 관리하는 뷰를 생성. 뷰 컨트롤러가 생성되고 순차적으로 완성되었을때만 호출된다.
-- viewDidLoad : 컨트롤러가 뷰의 메모리에 올라간 뒤에 호출된다. 뷰가 생성될 때만 호출된다.
-- viewWillAppear : 화면에 뷰가 표시될때마다 호출된다. 이 단계는 뷰는 정의된 바운드를 가지고 있지만 화면 회전은 적용되지 않는다.
-- viewWillLayoutSubviews : 뷰 컨트롤러에게 그 자식뷰의 레이아웃을 조정하는 것에 대한 것을 알려주기 위해 호출. 이 메소드는 프레임이 바뀔때마다 호출된다
-- viewDidLayoutSubviews : 뷰가 그 자식 뷰의 레이아웃에 영향을 준 것을 뷰 컨트롤러에게 알려주기 위해 호출. 뷰가 그 자식 뷰의 레이아웃을 바꾸고 난 뒤에 추가적인 변경을 하고 싶을 때 사용하는 이벤트 함수
-- viewDidAppear : 뷰가 나타났다는 것을 컨트롤러에게 알리는 역할을 수행. 호출되는 시점으로는 뷰가 화면에 나타난 직후에 실행된다.
-- viewWillDisAppear : 뷰가 사라지기 직전에 호출되는 함수이다. 뷰가 삭제 되려고 하고 있는 것을 뷰 컨트롤러에게 알린다.
-- viewDidDisAppear : 뷰 컨트롤러에게 뷰가 제거되었음을 알린다. 호출시점은 viewWillDisAppear 다음에 호출된다.
-
-## App의 생명주기(AppDelegate)
-- Not Running : 앱이 실행되지 않은 상태
-- Inactive : 앱이 실행중인 상태. 그러나 아무런 이벤트를 받지 않는 상태
-- Active : 앱이 실행중이며 이벤트가 발생한 상태
-- Background : 앱이 백그라운드에 있는 상태. 그러나 실행되는 코드가 있는 상태
-- Suspened : 앱이 백그라운드에 있고 실행되는 코드가 없는 상태
-(Inactive와 Active 상태를 합쳐 Foreground 라고 한다) 
-
-- application(_:didFinishLaunching:) 앱이 처음 시작될 떄 실행
-- applicationWillResignActive: 앱이 active 에서 inactive로 이동될 때 실행
-- applicationDidEnterBackground: 앱이 background 상태일 때 실행
-- applicationWillEnterForeground: 앱이 background에서 foreground로 이동 될때 실행 (아직 foreground에서 실행중이진 않음)
-- applicationDidBecomeActive: 앱이 active상태가 되어 실행 중일 때applicationWillTerminate: - 앱이 종료될 때 실행 
-
-## 고차함수(Map, Reduce, Filter)
-
-### Map
-- 데이터를 변형하고자 할 때 사용.
-- 기존 컨테이너의 값들은 변경되지 않고 새로운 컨테이너를 생성하여 반환한다.
-- 코드 재사용이 용이하다.
-- 컴파일러 최적화 측면에서 성능이 좋다.
-- 다중 스레드 환경에서 하나의 컨테이너에 여러 스레드들이 동시에 변경을 하려고 할 때 예측하지 못한 결과 발생을 방지한다.
-
-### Reduce
-- 컨테이너 내부를 하나로 합쳐주는 기능을 한다.
-- 정수 배열이라면 전달받은 함수의 연산 결과로 합쳐주고, 문자열 배열이라면 문자열을 하나로 합쳐준다.
-- 첫 번째 매개변수를 통해 초기값을 지정할 수 있다.
-
-### Filter
-- 컨테이너 내부의 값들을 걸러서 추출하고자 할 때 사용한다
-- Filter의 매개변수로 전달되는 함수의 반환 타입은 Bool 타입 이다.
-- 반환 값이 true라면 값을 포함하고, false라면 배제하여 map과 마찬가지로 새로운 컨테이너를 생성하여 반환한다.
-
-## 동기(Synchronize)와 비동기(Asyncronize)
-
-### 동기(Synchronize)
-- 주어진 명령을 차례대로 처리하되 하나의 업무가 완료될 때 까지는 다른 업무로 넘어가지 않는 방식.
-- 중간에 대기하는 시간 때문에 효율은 떨어지나 일관된 업무 보장과 동시다발적 업무가 발생하지 않으므로 대응이 불필요하여 업무구성이 단순화된다.
-
-### 비동기(Asyncronize)
-- 주어진 명령을 차례대로 처리하되 시간이 걸리는 업무는 진행해둔채 기다리는 동안 다른 업무를 처리하는 방식
-- 일관적인 업무 흐름이 깨지고 응답에 대한 대응이 필요하다.
-
-## 스레드
-- 하나의 프로세스 내에서 실행되는 작업흐름의 단위.
-- 프로세스가 시작하는 동시에 동작하는 스레드를 메인 스레드라고 하고 이외의 추가로 생성되는 스레드를 서브 스레드라고 부른다.
-
-## 멀티 스레드
-- 여러개의 스레드가 동시에 진행되는 것을 의미한다.
-- 하나의 프로세스 내에서 여러개의 스레드가 존재하고, 스레드들이 프로세스의 자원을 공유하되 실행은 독립적으로 이루어지는 구조.
-
-## 병렬성(Concurrency) 작업을 위해 IOS에서 지원하는 API
-
-### GCD(Grand Central Dispatch)
-- Multicore Process를 위한 Thread programming의 방법이다.
-- 스레드를 관리하면서 동시적으로 작업을 실행시키는 애플이 제공하는 저수준 API를 제공하는 라이브러리이다.
-- 기본적으로 스레드 풀의 관리를 프로그래머가 아닌 운영체제에서 관리하기 때문에 프로그러머가 작업을 비동기적으로 쉽게 사용할 수 있다.
-- 프로그래머가 실행할 작업을 생성하고 Dispatch Queue에 추가하면 GCD는 작업에 맞는 스레드를 자동으로 생성해서 실행하고 작업이 종료되면 해당 스레드를 제거한다.
-
-#### 디스패치 대기열(Dispatch Queue)
-- 작업을 연속적 혹은 동시에 진행하기는 하지만, 언제나 먼저 들어오면 먼저 나가는 순서로 실행된다.
-- Serial Dispatch Queue는 한 번에 하나의 작업만을 실행하며, 해당 작업이 대기열에서 제외되고 새로운 작업이 시작되기 전까지 기다린다.
-- Concurrent Dispatch Queue는 이미 시작된 작업이 완료될 때까지 기다리지 않고 가능한 많은 작업을 진행한다.
-- 디스패치 대기열은 GCD 기술 일부이다.
-
-### NSOperation 
-- NSOperation은 어떤 하나의 작업을 나타낸다.
-- 모델링 상태, 우선순위, 의존성, 관리를 지원하는 유용하고 Thread safe한 추상 클래스이다.
-- 예를들어 네트워크 요청, 이미지 리사이즈, 텍스트 처리, 기타 다양한 반복처리 등 오래걸리는 작업을 처리해야하는 NSOperation가 있다고 할 때 특정 작업이 담겨있는 객체는 감독 없이 많은 일을 할 수 없는데, 이러한 작업을 진행하는 감독을 NSOperationQueue가 담당한다.
-
 ## 동시성 프로그래밍, 병렬성 프로그래밍
 
 ### 동시성 프로그래밍
@@ -185,41 +212,6 @@
 - 물리적
 - 실제로 작업이 동시에 처리된다.
 - 멀티코어에서만 가능
-
-## 디자인 패턴
-
-### MVC
-- Model + View + Controller
-
-- Model : 애플리케이션에서 사용할 데이터들을 관리
-- View : 유저 인터페이스를 표현 및 관리
-- Controller : View와 Model의 다리 역할을 하며, ㄷView의 입력을 Model이 반영하고 Model의 변화를 View에 갱싢는 역할을 한다.
-- 하지만 애플의 MVC는 기존의 MVC와 달라서 View와 Controller가 강하게 연결되어 있어 View Controller가 거의 모든일을 한다.
-
-### MVP
-- Model + View + Presenter
-- Model과 View는 MVC 패턴과 동일하고, Controller 대신 Presenter가 존재
-
-- Model : 어플리케이션에서 사용되는 데이터와 그 데이터를 처리하는 부분
-- View : 사용자에서 보여지는 UI 부분
-- Presenter : View에서 요청한 정보로 Model을 가공하여 View에 전달해 주는 부분
-
-### MVVM
-- Model + View + ViewModel
-- Controller를 빼고 ViewModel을 추가한 패턴이다.
-- View Controller가 View가 되고 ViewModel이 중간 역할을 한다.
-- View와 ViewModel 사이에 Binding(바인딩-연결고리)가 있다.
-- ViewModel은 Model에 변화를 주고, ViewModel을 업데이트 하는데 이 바인딩으로 인해 View도 업데이트 된다.
-- Reactive programming을 할때 많이 사용하는 패턴
-
-### VIPER
-- View + Interactor + Presenter, Entities, Router
-
-- View : Presenter의 요청대로 디스플레이하고, 사용자 입력을 Presenter로 보내는 역할을 한다.
-- Interactor : Use Case에 따라서 Entity 모델 객체를 조작하는 로직을 담고 있습니다.
-- Presenter : Interactor로부터 데이터를 가져오고, View로 보내기 위해 데이터를 준비하여 언제 View에 보여줄지를 결정한다.
-- Entity : 모델 객체 Dumb Model
-- Router : 화면 전환을 담당하며, Presenter가 언제 화면을 전환해야하는지를 안다면, Wireframe은 화면전환을 어떻게 해야하는지 알고 있다.
 
 ## UIStackView
 - 여러뷰를 가로방향 또는 세로방향으로 배치할 때 복잡한 컨스트레인트 설정 없이, 또는 컨스트레인트만으로 설정하기 어려운 뷰의 배치등을 구현할때 쓰일 수 있는 뷰.
@@ -270,3 +262,9 @@
 3. 클로저의 캡쳐리스트(closure capture list)를 신경써야함.
 - 클로저의 사용이 많아 캡쳐리스트를 사용하여 메모리 누수를 일으키는 강한 순환 참조를 피할수 있게 신경써야함.
 - 클로저에서는 value type이라고 하더라도, 해당 객체가 만들어진 곳의 인스턴스를 참조한다. 캡쳐 리스트를 해주지 않으면 경쟁상태(race condition) 같은 것이 발생할 수 있다.
+
+## ARC(Automatic Reference Counting)
+- 자동 참조 계수라고 하며 앱의 메모리 사용을 추적하고 관리하기 위해 사용한다.
+- ARC는 인스턴스가 더이상 필요가 없을 때 클래스 인스턴스에 사용된 메모리를 자동적으로 해제한다.
+- 코드를 빌드(컴파일) 할때 특정 객체의 레퍼런스 카운트를 추적하여 0 가 되는 시점에 자동으로 release 코드를 넣어주는것을 말한다.
+- 컴파일 시점에 동작한다.
